@@ -2,8 +2,18 @@
 const app = require('./config/server');
 
 /* Parametrizar a porta de escuta */
-var server = app.listen(80, () => {
+var server = app.listen(80, function() {
     console.log('Servidor Online'); 
     });
 
-require('socket.io').listen(server);
+/* Integrando o socket.io */
+var io = require('socket.io').listen(server);
+
+/* Criando a conexão por websocket */
+io.on('connection',function(socket) {
+    console.log('Usuário conectou');
+
+    socket.on('disconnect', function(){
+        console.log('Usuário desconectou');
+    });
+});
