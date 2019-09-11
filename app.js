@@ -25,19 +25,41 @@ io.on('connection',function(socket) {
 // Por ultimo criado a função broadcast para mandar para todos os usuarios conectados
 //Broadcast envia para todos os usuario menos para quem enviou, por isso esta 'duplicado'
     socket.on('msgParaServidor', function(data) {
+
+        /* Eventos de dialogo */
+        if(data.mensagem.length > 0)
+        {
+            socket.emit(
+                'msgParaCliente', 
+                {
+                    apelido: data.apelido,
+                    mensagem: data.mensagem
+                }
+            );
+            socket.broadcast.emit(
+                'msgParaCliente', 
+                {
+                    apelido: data.apelido,
+                    mensagem: data.mensagem
+                }
+            );
+        }
+
+        /* atualizar participantes */
+        if(parseInt(data.apelido_att_clientes) == 0){
         socket.emit(
-            'msgParaCliente', 
+            'participantesParaCliente', 
             {
-                apelido: data.apelido,
-                mensagem: data.mensagem
+                apelido: data.apelido
             }
         );
         socket.broadcast.emit(
-            'msgParaCliente', 
+            'participantesParaCliente', 
             {
-                apelido: data.apelido,
-                mensagem: data.mensagem
+                apelido: data.apelido
             }
         );
+    }
+
     });
 });
