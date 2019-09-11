@@ -19,4 +19,25 @@ io.on('connection',function(socket) {
     socket.on('disconnect', function(){
         console.log('Usuário desconectou');
     });
+
+// Para enviar a mensagem para todos os ususários primeiro foi recuperado a msg da view
+// Depois enviada para a controller emitir na tela
+// Por ultimo criado a função broadcast para mandar para todos os usuarios conectados
+//Broadcast envia para todos os usuario menos para quem enviou, por isso esta 'duplicado'
+    socket.on('msgParaServidor', function(data) {
+        socket.emit(
+            'msgParaCliente', 
+            {
+                apelido: data.apelido,
+                mensagem: data.mensagem
+            }
+        );
+        socket.broadcast.emit(
+            'msgParaCliente', 
+            {
+                apelido: data.apelido,
+                mensagem: data.mensagem
+            }
+        );
+    });
 });

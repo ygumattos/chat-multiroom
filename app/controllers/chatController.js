@@ -19,5 +19,5 @@ module.exports.iniciaChat = (application, req, res) => {
         }
     );
 
-    res.render("chat");
+    res.render("chat", {dadosForm: dadosForm});
 }
