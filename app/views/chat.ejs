@@ -110,7 +110,7 @@
 							<input type="text" class="form-control" placeholder="Mensagem" id="mensagem">
 							<input type="hidden" value="<%=dadosForm.apelido%>" id="apelido">
 							<span class="input-group-btn">
-								<button class="btn btn-default" type="button" id="enviar_mensagem">></button>
+								<button class="btn btn-default"  type="button" id="enviar_mensagem">></button>
 							</span>
 						</div>
 					</div>
@@ -122,6 +122,13 @@
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 		<script src="/socket.io/socket.io.js"></script> <!-- src default do socket io -->
 		<script>
+			document.addEventListener('keypress', function(e){
+				if(e.which == 13)
+				{
+						$('#enviar_mensagem').click()
+				}
+			}, false);
+	
 			var socket = io('http://localhost');
 
 			$('#enviar_mensagem').click(function(){
@@ -129,6 +136,7 @@
 					'msgParaServidor',
 					{apelido: $('#apelido').val(), mensagem: $('#mensagem').val()}
 				);
+				$('#mensagem').val('');
 			});
 
 			socket.on('msgParaCliente', function(callback) { //callback == 2º param do emit em chatController
